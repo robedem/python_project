@@ -1,7 +1,7 @@
 # python_project
 This is virtual assistant that does the work of cortana in a windows laptop
 The aim of this project is to help users control your windows laptop using voice commands.
-in this project i have improted some library whi
+in this project i have improted some library which are
 1 - speechRecognition library : This library is used for the recognition of the users voice
 2 - Pyttx3 which stands for python text to speech : This library is used for the conversion of the output the laptop is giving to a voice output
 3 - openai : This library is used to generate answers that are not part of the commands the code is executing

@@ -107,98 +107,88 @@ while True:
     try:
         text = r.recognize_google(audio)
         if wake_word in text.lower():
-             hour = datetime.datetime.now().hour
-             if hour >= 0 and hour < 12:
+            hour = datetime.datetime.now().hour
+            if hour >= 0 and hour < 12:
                 speak('Good morning!, I am your virtual assistant . How can I help you?')
-             elif hour >= 12 and hour < 18:
+            elif hour >= 12 and hour < 18:
                 speak('Good afternoon!, I am your virtual assistant . How can I help you?' )
-             else:
+            else:
                 speak('Good evening!, I am your virtual assistant . How can I help you?')
                 speak('I am your virtual assistant . How can I help you?')
             # Once the wake word is detected, start the speech recognition process
-             while True:
+            
+                    
+        elif "play music" in text.lower():
+            speak("Sure, which song would you like to play?")
+            # Wait for the user to specify the song
+            while True:
                 text = recognize_speech()
                 if text is not None:
-                    if "turn on" in text.lower():
-                        speak("Assistant is turned on")
-                        while True:
-                            text = recognize_speech()
-                            if text is not None:
-                                print("User: " + text)
-                                if "hello" in text.lower() or "hi" in text.lower():
-                                    speak("Hi there!")
-                    
-                    elif "play music" in text.lower():
-                        speak("Sure, which song would you like to play?")
-                        # Wait for the user to specify the song
-                        while True:
-                            text = recognize_speech()
-                            if text is not None:
-                                found_song = False
-                                for song in playlist:
-                                    if text.lower() in song.lower():
-                                        pygame.mixer.music.load(song)
-                                        pygame.mixer.music.play()
-                                        speak(f"Now playing {os.path.basename(song)}.")
-                                        found_song = True
-                                        break
-                                if not found_song:
-                                    speak("Sorry, I couldn't find that song in your playlist.")
-                                break
-                    elif 'time' in text.lower():
-                        get_time()
-                    elif "do i have diabaties" in text.lower():
-                        speak("i can help you check the possibility")
-                        speak("Please tell me your age")
-                        age = int(recognize_speech())
-                        speak("Please tell me your curent Body mass index")
-                        bmi = float(recognize_speech())
-                        speak("Please tell me your current blood sugar level")
-                        fasting_blood_sugar = int(recognize_speech())
-                        result = check_diabetes(age, bmi, fasting_blood_sugar)
-                        speak(result)
-                    elif "weather" in text.lower():
-                        city = text.split()[-1]
-                        get_weather(city)
+                    found_song = False
+                    for song in playlist:
+                        if text.lower() in song.lower():
+                            pygame.mixer.music.load(song)
+                            pygame.mixer.music.play()
+                            speak(f"Now playing {os.path.basename(song)}.")
+                            found_song = True
+                            break
+                    if not found_song:
+                        speak("Sorry, I couldn't find that song in your playlist.")
+                    break
+        elif 'time' in text.lower():
+            get_time()
+        elif "do i have diabaties" in text.lower():
+            speak("i can help you check the possibility")
+            speak("Please tell me your age")
+            age = int(recognize_speech())
+            speak("Please tell me your curent Body mass index")
+            bmi = float(recognize_speech())
+            speak("Please tell me your current blood sugar level")
+            fasting_blood_sugar = int(recognize_speech())
+            result = check_diabetes(age, bmi, fasting_blood_sugar)
+            speak(result)
+        elif "weather" in text.lower():
+            city = text.split()[-1]
+            get_weather(city)
 
 
-                    elif 'date' in text.lower():
-                        get_date()
-                    elif 'play {song}' + 'on youtube' in text.lower():
-                        play_song(song)
-                    
-                    elif "stop music" in text.lower():
-                        pygame.mixer.music.stop()
-                        speak("Stopping music playback.")
-                    elif "goodbye" in text.lower():
-                        speak("Goodbye!")
-                        break                    
-                    elif "set alarm" in text.lower():
-                        speak("Sure, at what time would you like to set the alarm?")
-                        while True:
-                            text = recognize_speech()
-                            if text is not None:
-                                if any(char.isdigit() for char in text):
-                                    hour, minute = None, None
-                                    for word in text.split():
-                                        if word.isdigit():
-                                            if hour is None:
-                                                hour = int(word)
-                                            else:
-                                                minute = int(word)
-                                    if hour is None or minute is None:
-                                        speak("I'm sorry, I didn't understand the time you specified.")
-                                    else:
-                                        speak(f"Setting alarm for {hour} {minute}")
-                                        # code to set alarm goes here
-                                        break
+        elif 'date' in text.lower():
+            get_date()
+        elif 'play {song}' + 'on youtube' in text.lower():
+            play_song(song)
+        
+        elif "stop music" in text.lower():
+            pygame.mixer.music.stop()
+            speak("Stopping music playback.")
+        elif "goodbye" in text.lower():
+            speak("Goodbye!")
+            break                    
+        elif "set alarm" in text.lower():
+            speak("Sure, at what time would you like to set the alarm?")
+            while True:
+                text = recognize_speech()
+                if text is not None:
+                    if any(char.isdigit() for char in text):
+                        hour, minute = None, None
+                        for word in text.split():
+                            if word.isdigit():
+                                if hour is None:
+                                    hour = int(word)
                                 else:
-                                    break 
-                                    speak("I'm sorry, I didn't understand the time you specified.")
-                                        
+                                    minute = int(word)
+                        if hour is None or minute is None:
+                            speak("I'm sorry, I didn't understand the time you specified.")
+                        else:
+                            speak(f"Setting alarm for {hour} {minute}")
+                            # code to set alarm goes here
+                            break
                     else:
-                        answer = get_openai_answer(text)
-                        speak(answer)
+                        break 
+                        speak("I'm sorry, I didn't understand the time you specified.")
+                            
+        else:
+            answer = get_openai_answer(text)
+            speak(answer)
     except sr.UnknownValueError:
         pass
     except sr.RequestError:

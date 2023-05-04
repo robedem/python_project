@@ -9,3 +9,7 @@ in this project i have improted some library which ares
 5 - os: this library is used for opening paths to any folder that is not python related or text realted
 
 with the use of this library i have been able to generate voice output and speech recgognition which are the most important part for this programm to work
+
+# usage of the program
+To use this program you should install the librarys listed above
+And in the space of api keys you are to create your own api key and pass it in the space of api
